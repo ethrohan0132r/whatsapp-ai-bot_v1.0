@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp AI Chatbot</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- হেডার -->
+        <header>
+            <div class="logo">
+                <i class="fab fa-whatsapp"></i>
+                <h1>WhatsApp AI চ্যাটবট</h1>
+            </div>
+            <p class="subtitle">HTML, CSS, JS + Baileys দিয়ে তৈরি</p>
+        </header>
+
+        <!-- QR এবং স্ট্যাটাস সেকশন -->
+        <section class="dashboard">
+            <div class="card">
+                <h2><i class="fas fa-qrcode"></i> QR কোড</h2>
+                <div class="qr-container">
+                    <div id="qrCode"></div>
+                    <p id="qrMessage">বট শুরু করতে QR স্ক্যান করুন</p>
+                </div>
+                <button id="generateQR" class="btn">
+                    <i class="fas fa-sync-alt"></i> নতুন QR জেনারেট
+                </button>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-robot"></i> বট কন্ট্রোল</h2>
+                <div class="status">
+                    <div class="status-indicator" id="statusIndicator"></div>
+                    <span id="statusText">ডিসকানেক্টেড</span>
+                </div>
+                <div class="controls">
+                    <button id="startBot" class="btn btn-start">
+                        <i class="fas fa-play"></i> বট শুরু করুন
+                    </button>
+                    <button id="stopBot" class="btn btn-stop">
+                        <i class="fas fa-stop"></i> বট বন্ধ করুন
+                    </button>
+                </div>
+                <div class="stats">
+                    <div class="stat">
+                        <i class="fas fa-comments"></i>
+                        <span>মেসেজ: <span id="messageCount">0</span></span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-users"></i>
+                        <span>ব্যবহারকারী: <span id="userCount">0</span></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- চ্যাট ইন্টারফেস -->
+        <section class="chat-section">
+            <div class="card chat-card">
+                <h2><i class="fas fa-comment-dots"></i> চ্যাট সিমুলেশন</h2>
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <!-- চ্যাট মেসেজগুলো এখানে লোড হবে -->
+                        <div class="message bot">
+                            <div class="avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="content">
+                                <p>আপনার WhatsApp AI বট প্রস্তুত! QR কোড স্ক্যান করে শুরু করুন।</p>
+                                <span class="time">অভিনন্দন!</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input">
+                        <input type="text" id="messageInput" 
+                               placeholder="এখানে মেসেজ টাইপ করুন (সিমুলেশন)...">
+                        <button id="sendMessage" class="btn">
+                            <i class="fas fa-paper-plane"></i> পাঠান
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- লগ সেকশন -->
+            <div class="card log-card">
+                <h2><i class="fas fa-clipboard-list"></i> সিস্টেম লগ</h2>
+                <div class="log-container" id="logContainer">
+                    <div class="log-entry">
+                        <span class="timestamp">[12:00]</span>
+                        <span class="log-message">সিস্টেম শুরু হয়েছে...</span>
+                    </div>
+                </div>
+                <button id="clearLogs" class="btn btn-small">
+                    <i class="fas fa-trash"></i> লগ পরিষ্কার
+                </button>
+            </div>
+        </section>
+
+        <!-- সেটিংস -->
+        <section class="settings">
+            <div class="card">
+                <h2><i class="fas fa-cog"></i> সেটিংস</h2>
+                <div class="form-group">
+                    <label for="aiModel">AI মডেল:</label>
+                    <select id="aiModel" class="form-control">
+                        <option value="simple">সিম্পল রেসপন্স</option>
+                        <option value="gpt">ChatGPT (API লাগবে)</option>
+                        <option value="gemini">Gemini AI</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="language">ভাষা:</label>
+                    <select id="language" class="form-control">
+                        <option value="bn" selected>বাংলা</option>
+                        <option value="en">English</option>
+                        <option value="both">উভয়</option>
+                    </select>
+                </div>
+                <button id="saveSettings" class="btn">
+                    <i class="fas fa-save"></i> সেটিংস সেভ করুন
+                </button>
+            </div>
+
+            <!-- ডেপ্লয় সেকশন -->
+            <div class="card deploy-card">
+                <h2><i class="fab fa-github"></i> GitHub পাবলিশ</h2>
+                <p>এই প্রজেক্ট GitHub Pages-এ হোস্ট করুন:</p>
+                <div class="deploy-steps">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>GitHub-এ রিপোজিটরি তৈরি করুন</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>সব ফাইল আপলোড করুন</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>Settings → Pages → Branch: main সিলেক্ট করুন</span>
+                    </div>
+                </div>
+                <a href="https://github.com" target="_blank" class="btn github-btn">
+                    <i class="fab fa-github"></i> GitHub-এ যান
+                </a>
+            </div>
+        </section>
+
+        <!-- ফুটার -->
+        <footer>
+            <p>© 2024 WhatsApp AI Chatbot | তৈরি করেছেন HTML, CSS, JS + Baileys দিয়ে</p>
+            <p class="warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                এটি শিক্ষামূলক প্রজেক্ট। WhatsApp-এর Terms অবমাননা করবেন না।
+            </p>
+        </footer>
+    </div>
+
+    <!-- স্ক্রিপ্ট -->
+    <script src="script.js"></script>
+</body>
+</html>
