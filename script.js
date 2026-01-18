@@ -14,6 +14,80 @@ const clearLogsBtn = document.getElementById('clearLogs');
 const messageCountElement = document.getElementById('messageCount');
 const userCountElement = document.getElementById('userCount');
 
+// Railway API-তে কানেক্ট করার ফাংশন
+async function connectToRailwayAPI() {
+    try {
+        const response = await fetch('/api/status');
+        const data = await response.json();
+        
+        console.log('Railway API Connected:', data);
+        addLog(`Server Status: ${data.status}`, 'success');
+        
+        return true;
+    } catch (error) {
+        console.error('API Connection failed:', error);
+        addLog('Railway API Connection Failed', 'error');
+        return false;
+    }
+}
+
+// WhatsApp Session Start (Simulation)
+async function startWhatsAppSession() {
+    try {
+        const response = await fetch('/api/start-session');
+        const data = await response.json();
+        
+        if (data.success) {
+            // Show QR Code
+            document.getElementById('qrCode').innerHTML = 
+                `<img src="${data.qr}" alt="QR Code" style="width:200px;height:200px;">`;
+            
+            addLog('WhatsApp Session Started (Simulation)', 'success');
+            updateBotStatus(true);
+        }
+    } catch (error) {
+        console.error('Session start failed:', error);
+    }
+}
+
+// Send Message to Railway API
+async function sendToAPI(message) {
+    try {
+        const response = await fetch('/api/simulate-message', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                message: message,
+                sender: 'web-user'
+            })
+        });
+        
+        const data = await response.json();
+        return data.reply;
+    } catch (error) {
+        return 'API Error: ' + error.message;
+    }
+}
+
+// Update your existing sendMessage function
+async function sendMessage() {
+    const message = document.getElementById('messageInput').value.trim();
+    if (!message) return;
+    
+    // Show user message
+    addChatMessage(message, true);
+    document.getElementById('messageInput').value = '';
+    
+    // Get AI response from Railway API
+    const aiResponse = await sendToAPI(message);
+    
+    // Show AI response
+    setTimeout(() => {
+        addChatMessage(aiResponse);
+        addLog(`AI Response: ${aiResponse.substring(0, 50)}...`, 'info');
+    }, 500);
+}
+
 // ভেরিয়েবল
 let messageCount = 0;
 let userCount = 0;
